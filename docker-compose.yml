@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  webservice:
+    image: ${DOCKER_REGISTRY-}webservice
+    ports:
+      - "5027:80"
+      - "7027:443"
+    build:
+      context: .
+      dockerfile: WebService/Dockerfile
+    environment:
+      MinioAccessKey : "user"
+      MinioSecretKey : "password"
+      MinioEndpoint: "host.docker.internal:9000"
+      NpgsqlConnectionString: "Host=host.docker.internal;Port=5432;Database=filesdb;Username=user;Password=password"
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: "user"
+      MINIO_ROOT_PASSWORD: "password"
+  
+  postgresdb:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 using WebService.Business.Interfaces;
-using WebService.Minio.Interfaces;
 using WebService.Models.Dto.Requests;
 using WebService.Models.Dto.Responses;
 
@@ -14,11 +12,11 @@ namespace WebService.Controllers
     [HttpPost]
     [DisableRequestSizeLimit]
     public async Task<Guid?> UploadFileAsync(
-      [FromForm(Name = "file")]IFormFile uploadedFile,
+      [FromForm] IFormFile file,
       [FromQuery] string? bucket,
       [FromServices] IUploadFileCommand command)
     {
-      return await command.ExecuteAsync(uploadedFile, bucket);
+      return await command.ExecuteAsync(file, bucket);
     }
 
     [HttpGet]

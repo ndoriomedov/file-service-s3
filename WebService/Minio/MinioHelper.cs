@@ -20,10 +20,11 @@ namespace WebService.Minio
     {
       _logger = logger;
 
-      string endpoint = minioConfiguration.Value.Endpoint;
-      string? accessKey = Environment.GetEnvironmentVariable("AccessKey").NullIfEmpty()
+      string endpoint = Environment.GetEnvironmentVariable("MinioEndpoint").NullIfEmpty()
+        ?? minioConfiguration.Value.Endpoint;
+      string? accessKey = Environment.GetEnvironmentVariable("MinioAccessKey").NullIfEmpty()
         ?? minioConfiguration.Value.DevAccessKey;
-      string? secretKey = Environment.GetEnvironmentVariable("SecretKey").NullIfEmpty()
+      string? secretKey = Environment.GetEnvironmentVariable("MinioSecretKey").NullIfEmpty()
         ?? minioConfiguration.Value.DevSecretKey;
 
       _defaultBucket = minioConfiguration.Value.DefaultBucket.ToLower();
